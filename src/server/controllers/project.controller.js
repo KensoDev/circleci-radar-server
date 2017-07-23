@@ -29,14 +29,14 @@ function getBuildStatusForBranch(req, res, next) {
 
 function create(req, res, next) {
   const name = req.body.name
-  const org = req.body.org || Project.getDefaultOrganization()
-  const vcs = req.body.vcs || Project.getDefaultvcsanization()
+  const org = req.body.org;
+  const vcs = req.body.vcs;
 
   let project = new Project({
     name,
     org,
     vcs,
-  })
+  });
 
   project
     .save()
