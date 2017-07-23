@@ -9,13 +9,11 @@ import httpStatus from 'http-status'
 import expressWinston from 'express-winston'
 import expressValidation from 'express-validation'
 import helmet from 'helmet'
-import passport from 'passport'
 import session from 'express-session'
 import winstonInstance from './winston'
 import routes from '../server/routes/index.route'
 import config from './env'
 import APIError from '../server/helpers/APIError'
-import User from '../server/models/user.model'
 
 const app = express()
 
@@ -28,23 +26,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cookieParser())
-app.use(
-  session({
-    secret: config.passportSecret,
-    resave: true,
-    saveUninitialized: true,
-  }),
-)
 app.use(compress())
 app.use(methodOverride())
-
-app.use(passport.initialize())
-app.use(passport.session())
-
-// configure passport for Auth
-passport.use(User.createStrategy())
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
 
 // secure apps by setting various HTTP headers
 app.use(helmet())

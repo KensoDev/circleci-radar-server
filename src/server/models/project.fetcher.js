@@ -1,10 +1,15 @@
 import fetch from 'node-fetch'
-import Build from './build.model'
+import { Project } from './index'
+import Build from './build'
 
 export default class ProjectFetcher {
   constructor(projects) {
     this.projects = projects
     this.token = process.env.TOKEN
+  }
+
+  static list() {
+    return Project.findAll()
   }
 
   fetchAll() {

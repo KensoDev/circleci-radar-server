@@ -1,0 +1,25 @@
+{
+  "development": {
+    "username": "circle",
+    "password": "1q2w3e4r",
+    "database": "circle_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": "5432"
+  },
+  "test": {
+    "username": "avizurel",
+    "password": null,
+    "circle": "circle_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": "5432"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "circle": "circle_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
