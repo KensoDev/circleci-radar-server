@@ -15,7 +15,7 @@ function getBuildStatusForBranch(req, res, next) {
   const branchName = req.query.branchName
   const builds = []
 
-  return this.list().then(projects => {
+  return ProjectFetcher.list().then(projects => {
     const fetcher = new ProjectFetcher(projects)
     Promise.all(fetcher.fetchAll()).then(results => {
       results.map(result => {
@@ -53,8 +53,20 @@ function create(req, res, next) {
     })
 }
 
+function rebuild(req, res, next) {
+  const name = req.body.name
+  const buildNum = req.body.buildNum
+
+  const fetcher = new ProjectFetcher([]);
+
+  return fetcher.rebuild(name, buildNum).then((resp) => {
+    res.json({ success: true })
+  });
+}
+
 export default {
   getAll,
   create,
   getBuildStatusForBranch,
+  rebuild,
 }
