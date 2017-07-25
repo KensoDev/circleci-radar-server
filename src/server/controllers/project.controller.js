@@ -1,8 +1,9 @@
 import { Project } from '../models'
 import ProjectFetcher from '../models/project.fetcher'
+import ProjectRepo from '../models/project.repo'
 
 function getAll(req, res, next) {
-  ProjectFetcher.list().then(projects => {
+  ProjectRepo.list().then(projects => {
     res.json(projects)
   })
 }
@@ -15,9 +16,9 @@ function getBuildStatusForBranch(req, res, next) {
   const branchName = req.query.branchName
   const builds = []
 
-  return ProjectFetcher.list().then(projects => {
+  return ProjectRepo.list().then(projects => {
     const fetcher = new ProjectFetcher(projects)
-    Promise.all(fetcher.fetchAll()).then(results => {
+    Promise.all(fetcher.fetchAllForBranch(branchName)).then(results => {
       results.map(result => {
         const build = fetcher.getLatestBuildForBranch(result.name, branchName, result.result)
         builds.push(build)

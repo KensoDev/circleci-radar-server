@@ -8,13 +8,11 @@ export default class ProjectFetcher {
     this.token = process.env.TOKEN;
   }
 
-  static list() {
-    return Project.findAll()
-  }
-
-  fetchAll() {
+  fetchAllForBranch(branchName) {
     return this.projects.map(project => {
-      const requestUrl = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}?circle-token=${this.token}`
+      const branch = encodeURIComponent(branchName)
+
+      const requestUrl = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/tree/${branch}?circle-token=${this.token}`
 
       return new Promise((resolve, reject) => {
         fetch(requestUrl).then(res => res.json()).then(result => {
@@ -36,7 +34,7 @@ export default class ProjectFetcher {
       }).then((project) => {
         const url = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/${buildNum}/retry?circle-token=${this.token}`;
 
-        return fetch(url, { 
+        return fetch(url, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -49,17 +47,10 @@ export default class ProjectFetcher {
     })
   }
 
-  getLatestBuildForBranch(projectName, branchName, builds) {
-    function* getBuildWithBranchName(branchName, builds) {
-      for (let currentBuild of builds) {
-        if (currentBuild.branch === branchName) {
-          yield currentBuild
-        }
-      }
-    }
-
-    const buildObject = getBuildWithBranchName(branchName, builds).next().value
-    const build = new Build(projectName, buildObject)
+  getLatestBuildForBranch(projectName, branchName, buildObject) {
+    console.log("BuildObject")
+    console.log(buildObject);
+    const build = new Build(projectName, buildObject[0]);
     console.log(build)
 
     return build
