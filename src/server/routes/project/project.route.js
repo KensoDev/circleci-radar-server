@@ -1,5 +1,12 @@
 import express from 'express'
-import { updateAllEnvVars, getAllEnvVars, rebuild, getBuildStatusForBranch, getAll, create } from '../../controllers/project.controller'
+import {
+  updateAllEnvVars,
+  getAllEnvVars,
+  rebuild,
+  getBuildStatusForBranch,
+  getAll,
+  create,
+} from '../../controllers/project.controller'
 
 const router = express.Router() // eslint-disable-line new-cap
 

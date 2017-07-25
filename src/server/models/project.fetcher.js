@@ -4,11 +4,11 @@ import Build from './build'
 
 export default class ProjectFetcher {
   constructor(projects) {
-    this.projects = projects;
-    this.token = process.env.TOKEN;
+    this.projects = projects
+    this.token = process.env.TOKEN
   }
 
-	fetchAllEnvVars(envVarName) {
+  fetchAllEnvVars(envVarName) {
     return this.projects.map(project => {
       const requestUrl = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/envvar/${envVarName}?circle-token=${this.token}`
 
@@ -20,8 +20,8 @@ export default class ProjectFetcher {
           })
         })
       })
-		});
-	}
+    })
+  }
 
   fetchAllForBranch(branchName) {
     return this.projects.map(project => {
@@ -52,13 +52,15 @@ export default class ProjectFetcher {
         return fetch(requestUrl, {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data)
-        }).then(res => res.json()).then((res) => {
-          resolve(res)
-        });
+          body: JSON.stringify(data),
+        })
+          .then(res => res.json())
+          .then(res => {
+            resolve(res)
+          })
       })
     })
   }
@@ -67,28 +69,30 @@ export default class ProjectFetcher {
     return new Promise((resolve, reject) => {
       return Project.findOne({
         where: {
-          name
-        }
-      }).then((project) => {
-        const url = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/${buildNum}/retry?circle-token=${this.token}`;
+          name,
+        },
+      }).then(project => {
+        const url = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/${buildNum}/retry?circle-token=${this.token}`
 
         return fetch(url, {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-        }).then(res => res.json()).then((res) => {
-          resolve(res)
-        });
+        })
+          .then(res => res.json())
+          .then(res => {
+            resolve(res)
+          })
       })
     })
   }
 
   getLatestBuildForBranch(projectName, branchName, buildObject) {
-    console.log("BuildObject")
-    console.log(buildObject);
-    const build = new Build(projectName, buildObject[0]);
+    console.log('BuildObject')
+    console.log(buildObject)
+    const build = new Build(projectName, buildObject[0])
     console.log(build)
 
     return build

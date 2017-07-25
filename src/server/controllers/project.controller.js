@@ -29,7 +29,7 @@ function getBuildStatusForBranch(req, res, next) {
 }
 
 function getAllEnvVars(req, res, next) {
-  const envVarName = req.query.name;
+  const envVarName = req.query.name
   const envVars = []
 
   return ProjectRepo.list().then(projects => {
@@ -44,19 +44,19 @@ function getAllEnvVars(req, res, next) {
       })
       return res.json(envVars)
     })
-  });
+  })
 }
 
 function updateAllEnvVars(req, res, next) {
-  const envVarName = req.body.name;
-  const envVarValue = req.body.value;
+  const envVarName = req.body.name
+  const envVarValue = req.body.value
 
   return ProjectRepo.list().then(projects => {
     const fetcher = new ProjectFetcher(projects)
     Promise.all(fetcher.updateAllEnvVars(envVarName, envVarValue)).then(results => {
       return res.json({ success: true })
     })
-  });
+  })
 }
 
 function create(req, res, next) {
@@ -89,11 +89,11 @@ function rebuild(req, res, next) {
   const name = req.body.name
   const buildNum = req.body.buildNum
 
-  const fetcher = new ProjectFetcher([]);
+  const fetcher = new ProjectFetcher([])
 
-  return fetcher.rebuild(name, buildNum).then((resp) => {
+  return fetcher.rebuild(name, buildNum).then(resp => {
     res.json({ success: true })
-  });
+  })
 }
 
 export default {
@@ -103,5 +103,4 @@ export default {
   rebuild,
   getAllEnvVars,
   updateAllEnvVars,
-
 }
