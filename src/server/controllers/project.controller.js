@@ -28,6 +28,25 @@ function getBuildStatusForBranch(req, res, next) {
   })
 }
 
+function getAllEnvVars(req, res, next) {
+  const envVarName = req.query.name;
+  const envVars = []
+
+  return ProjectRepo.list().then(projects => {
+    const fetcher = new ProjectFetcher(projects)
+    Promise.all(fetcher.fetchAllEnvVars(envVarName)).then(results => {
+      results.map(result => {
+        const envVar = {
+          projectName: result.name,
+          envVarValue: result.result.value,
+        }
+        envVars.push(envVar)
+      })
+      return res.json(envVars)
+    })
+  });
+}
+
 function create(req, res, next) {
   const name = req.body.name
   const org = req.body.org
@@ -70,4 +89,5 @@ export default {
   create,
   getBuildStatusForBranch,
   rebuild,
+  getAllEnvVars,
 }

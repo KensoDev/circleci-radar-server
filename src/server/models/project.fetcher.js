@@ -8,6 +8,21 @@ export default class ProjectFetcher {
     this.token = process.env.TOKEN;
   }
 
+	fetchAllEnvVars(envVarName) {
+    return this.projects.map(project => {
+      const requestUrl = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/envvar/${envVarName}?circle-token=${this.token}`
+
+      return new Promise((resolve, reject) => {
+        fetch(requestUrl).then(res => res.json()).then(result => {
+          resolve({
+            name: project.name,
+            result: result,
+          })
+        })
+      })
+		});
+	}
+
   fetchAllForBranch(branchName) {
     return this.projects.map(project => {
       const branch = encodeURIComponent(branchName)
