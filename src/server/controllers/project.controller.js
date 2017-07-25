@@ -47,6 +47,18 @@ function getAllEnvVars(req, res, next) {
   });
 }
 
+function updateAllEnvVars(req, res, next) {
+  const envVarName = req.body.name;
+  const envVarValue = req.body.value;
+
+  return ProjectRepo.list().then(projects => {
+    const fetcher = new ProjectFetcher(projects)
+    Promise.all(fetcher.updateAllEnvVars(envVarName, envVarValue)).then(results => {
+      return res.json({ success: true })
+    })
+  });
+}
+
 function create(req, res, next) {
   const name = req.body.name
   const org = req.body.org
@@ -90,4 +102,6 @@ export default {
   getBuildStatusForBranch,
   rebuild,
   getAllEnvVars,
+  updateAllEnvVars,
+
 }

@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllEnvVars, rebuild, getBuildStatusForBranch, getAll, create } from '../../controllers/project.controller'
+import { updateAllEnvVars, getAllEnvVars, rebuild, getBuildStatusForBranch, getAll, create } from '../../controllers/project.controller'
 
 const router = express.Router() // eslint-disable-line new-cap
 
@@ -10,5 +10,6 @@ router.get('/builds', getBuildStatusForBranch)
 router.post('/', create)
 router.post('/rebuild', rebuild)
 router.get('/envVars', getAllEnvVars)
+router.post('/envVars', updateAllEnvVars)
 
 export default router

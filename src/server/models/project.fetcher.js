@@ -40,6 +40,29 @@ export default class ProjectFetcher {
     })
   }
 
+  updateAllEnvVars(envVarName, envVarValue) {
+    return this.projects.map(project => {
+      return new Promise((resolve, reject) => {
+        const requestUrl = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/envvar?circle-token=${this.token}`
+        const data = {
+          name: envVarName,
+          value: envVarValue,
+        }
+
+        return fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        }).then(res => res.json()).then((res) => {
+          resolve(res)
+        });
+      })
+    })
+  }
+
   rebuild(name, buildNum) {
     return new Promise((resolve, reject) => {
       return Project.findOne({
@@ -54,7 +77,7 @@ export default class ProjectFetcher {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-          }
+          },
         }).then(res => res.json()).then((res) => {
           resolve(res)
         });
