@@ -44,6 +44,7 @@ export default class ProjectFetcher {
     return this.projects.map(project => {
       return new Promise((resolve, reject) => {
         const requestUrl = `https://circleci.com/api/v1.1/project/${project.vcs}/${project.org}/${project.name}/envvar?circle-token=${this.token}`
+
         const data = {
           name: envVarName,
           value: envVarValue,

@@ -54,7 +54,7 @@ function updateAllEnvVars(req, res, next) {
   return ProjectRepo.list().then(projects => {
     const fetcher = new ProjectFetcher(projects)
     Promise.all(fetcher.updateAllEnvVars(envVarName, envVarValue)).then(results => {
-      return res.json({ success: true })
+      res.json({ success: true })
     })
   })
 }
